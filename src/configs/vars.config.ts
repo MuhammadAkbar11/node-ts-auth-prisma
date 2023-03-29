@@ -3,21 +3,27 @@ import path from "path";
 import fs from "fs";
 import { ModeTypes } from "../utils/types/types";
 import logger from "./logger.config";
-import { string } from "zod";
 
 const appDirname = path.resolve();
 
-const isDevelopment = Boolean(process.env.TS_NODE_DEV);
-let mode: ModeTypes = isDevelopment ? "development" : "production";
+let mode: ModeTypes = Boolean(process.env.TS_NODE_DEV)
+  ? "development"
+  : "production";
 
-const envPath = {
+const envFilePaths = {
   production: path.join(appDirname, ".env"),
   development: path.join(appDirname, ".env.dev"),
   testing: path.join(appDirname, ".env.test"),
 };
 
+const envFile = envFilePaths[mode] || envFilePaths["production"];
+
+if (envFile) {
+  logger.info(`[SERVER] env file is founded : (${envFile})!`);
+}
+
 export const dotenvConfig = dotenv.config({
-  path: envPath[mode],
+  path: envFile,
 });
 
 if (process.env.NODE_ENV === "testing") {
