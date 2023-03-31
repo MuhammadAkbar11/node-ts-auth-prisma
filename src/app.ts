@@ -8,7 +8,7 @@ import {
   returnError404Middleware,
   returnErrorMiddleware,
 } from "./middlewares/error.middleware";
-import { AutoBind } from "./utils/utils";
+import { AutoBind } from "./utils/decorators.utils";
 
 class App {
   public server;
