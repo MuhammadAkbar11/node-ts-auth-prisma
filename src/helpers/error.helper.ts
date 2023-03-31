@@ -1,5 +1,6 @@
-import { HTTP_STATUS_CODE } from "../configs/vars.config";
+import { HTTP_STATUS_CODE, MODE } from "../configs/vars.config";
 import { ErrorData } from "../utils/types/interfaces";
+import { getErrorSnippets } from "../utils/utils";
 
 interface ValidationParam {
   type: string;
@@ -34,10 +35,14 @@ class BaseError extends Error {
   }
 
   static transformError(error: BaseError): BaseError {
-    return new BaseError(error.name, error.statusCode, error.message, {
-      isOperational: error.isOperational,
+    const errors = {
       ...error.errors,
-    });
+      isOperational: error.isOperational ?? false,
+    } as any;
+    if (!errors.isOperational && MODE === "development") {
+      errors.stackTrace = getErrorSnippets(error);
+    }
+    return new BaseError(error.name, error.statusCode, error.message, errors);
   }
 
   // static validationError(errors: unknown[]): BaseError {

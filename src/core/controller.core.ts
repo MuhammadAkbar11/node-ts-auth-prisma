@@ -17,7 +17,9 @@ export class CoreController {
     name: string | null,
     statusCode: number,
     message: string,
-    errors: ErrorData = {}
+    errors: ErrorData = {
+      isOperational: true,
+    }
   ) {
     throw new BaseError(name, statusCode, message, errors);
   }

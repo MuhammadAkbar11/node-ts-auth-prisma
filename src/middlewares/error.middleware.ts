@@ -3,13 +3,30 @@ import BaseError from "../helpers/error.helper";
 import logger from "../configs/logger.config";
 import { Request, NextFunction, Response } from "express";
 import { HTTP_STATUS_CODE } from "../configs/vars.config";
+import { isObjectEmpty, objHasKey, printDivider } from "../utils/utils";
 
 const errorText = chalk.hex("#DA1212");
 
 function logError(err: any) {
-  // logger.error(chalk.red(`[name] : ${err.name}`));
-  logger.error(chalk.red(`[message] : ${err.message}`));
-  logger.error(`${errorText("[stack] : ")} \n${errorText(err.stack)}`);
+  logger.error(chalk.red(`[SERVER] ERROR(${err?.statusCode}): ${err.message}`));
+  let trace = "-";
+  if (err.errors.stackTrace) {
+    console.log();
+    trace = `\n\n
+  ${err.errors.stackTrace.join(`\n\n  `)}\n`;
+  }
+
+  console.log(
+    errorText(`${printDivider()}
+
+  Name        : ${err.name}
+  Message:    : ${err.message}
+  Stack Trace : ${trace}
+
+${printDivider()}`)
+  );
+
+  // Usage:
 }
 
 export function logErrorMiddleware(
@@ -41,10 +58,20 @@ export function returnErrorMiddleware(
   const status = err?.statusCode || HTTP_STATUS_CODE.INTERNAL_SERVER;
   const message = err?.message || "Internal Server Error";
   const errData = err?.errors || null;
-  res.status(status).json({
+
+  let responseData = {
     name,
     status,
     message,
-    errors: errData,
-  });
+  };
+
+  if (objHasKey(errData, "stackTrace")) {
+    delete errData.stackTrace;
+  }
+
+  if (!isObjectEmpty(errData)) {
+    return res.status(status).json({ ...responseData, errors: errData });
+  }
+
+  res.status(status).json(responseData);
 }
