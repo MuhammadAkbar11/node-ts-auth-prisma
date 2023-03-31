@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { CoreController } from "../../core/controller.core";
-import { BindAllMethods } from "../../utils/utils";
+import { BindAllMethods } from "../../utils/decorators.utils";
 import apiVersion from "../../utils/version.utils";
 
 @BindAllMethods
