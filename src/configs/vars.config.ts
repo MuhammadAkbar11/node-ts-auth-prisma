@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import path from "path";
 import fs from "fs";
+import os from "os";
 import { ModeTypes } from "../utils/types/types";
 import logger from "./logger.config";
 
@@ -63,12 +64,17 @@ if (mode !== "production") {
   }
 }
 
+export const HOSTNAME = os.hostname();
 export const PORT = process.env.PORT || 3000;
 export const MODE = mode;
 export const DATABASE_URL = process.env.DATABASE_UR as string;
 export const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
 export const PUBLIC_KEY = process.env.PUBLIC_KEY as string;
 export const UPLOAD_PATH = uploadPath;
+export const SERVER_URL =
+  MODE === "development"
+    ? `http://localhost:${PORT}/`
+    : `http://${HOSTNAME}:${PORT}/`;
 
 export const HTTP_STATUS_CODE = {
   OK: 200,
