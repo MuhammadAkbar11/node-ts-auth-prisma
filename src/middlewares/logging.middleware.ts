@@ -33,13 +33,21 @@ const log = pinoHttp({
     },
   },
 
+  customLogLevel(req, res, error) {
+    if (res.statusCode >= 400 && res.statusCode < 500) {
+      return "warn";
+    } else if (res.statusCode >= 500 || error) {
+      return "error";
+    } else if (res.statusCode >= 300 && res.statusCode < 400) {
+      return "silent";
+    }
+    return "info";
+  },
   customSuccessMessage: function (req: IncomingMessage, res: ServerResponse) {
     const reqMethod = req?.method as string;
-
     const method = (httpMethodColors[reqMethod] || httpMethodColors["DEFAULT"])(
       reqMethod
     );
-
     const url = textWhite(`- ${req.url} -`);
     if (res.statusCode >= 200 && res.statusCode < 300) {
       return `${method} ${url} ${chalk.green(res.statusCode)}`;
@@ -56,10 +64,11 @@ const log = pinoHttp({
     if (res.statusCode === 500) {
       return `${method} ${url} ${chalk.red(res.statusCode)}`;
     }
-    // Logger.info();
     return `${method} ${url} ${res.statusCode}`;
   },
-
+  customErrorObject(req, res, error, val) {
+    return error?.message;
+  },
   customAttributeKeys: {
     req: "request",
     res: "response",
