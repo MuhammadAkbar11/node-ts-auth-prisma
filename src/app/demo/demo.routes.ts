@@ -1,15 +1,14 @@
 import { CoreRouter } from "../../core/router.core";
 import DemoController from "./demo.controller";
 
-class DemoRouter extends CoreRouter {
+class DemoRouter extends CoreRouter<DemoController> {
   constructor() {
-    super();
+    super(DemoController);
     this.init();
   }
 
   protected init() {
-    const controller = new DemoController();
-    this.router.get("/", controller.GET);
+    this.router.get("/", this.controller.GET);
   }
 }
 
