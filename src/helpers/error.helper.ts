@@ -1,6 +1,7 @@
 import { HTTP_STATUS_CODE, MODE } from "../configs/vars.config";
 import { ErrorData } from "../utils/types/interfaces";
-import { getErrorSnippets } from "../utils/utils";
+import _ from "lodash";
+import { getErrorSnippets, objHasKey } from "../utils/utils";
 
 interface ValidationParam {
   type: string;
@@ -35,37 +36,21 @@ class BaseError extends Error {
   }
 
   static transformError(error: BaseError): BaseError {
-    const errors = {
+    let errors: Record<string, unknown> = {
       ...error.errors,
       isOperational: error.isOperational ?? false,
-    } as any;
-    if (!errors.isOperational && MODE === "development") {
-      errors.stackTrace = getErrorSnippets(error);
+    };
+    if (!errors.isOperational) {
+      if (!objHasKey(errors, "stackTrace")) {
+        _.set(errors, "stackTrace", getErrorSnippets(error) as any);
+      }
+    } else {
+      if (objHasKey(errors, "stackTrace")) {
+        _.unset(errors, "stackTrace");
+      }
     }
     return new BaseError(error.name, error.statusCode, error.message, errors);
   }
-
-  // static validationError(errors: unknown[]): BaseError {
-  //   const validationErrors: ValidationErrors = {};
-
-  //   errors.forEach(error => {
-  //     const { param, msg } = error as { param: string; msg: string };
-  //     if (!validationErrors[param]) {
-  //       validationErrors[param] = { type: param, message: [] };
-  //     }
-  //     validationErrors[param].message.push(msg);
-  //   });
-
-  //   return new BaseError(
-  //     "BAD_VALIDATION",
-  //     HTTP_STATUS_CODE.BAD_REQUEST,
-  //     "Bad Validation",
-  //     {
-  //       isOperational: true,
-  //       errors: validationErrors,
-  //     }
-  //   );
-  // }
 }
 
 export default BaseError;

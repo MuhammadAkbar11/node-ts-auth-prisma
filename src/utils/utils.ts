@@ -26,10 +26,12 @@ export function getErrorSnippets(error: Error) {
         /helper\.ts/,
         /core\.ts/,
         /__awaiter/,
+        /at step \(/,
+        /this.throw/,
+        /at Object.next/,
       ];
       return !ignoredPatterns.some(pattern => pattern.test(stack));
-    })
-    .reverse();
+    });
   const codeSnippet = stackTrace
     .map(line => line.match(/at (.+) \((.+):(\d+):(\d+)\)/))
     .filter(Boolean)
@@ -59,9 +61,9 @@ export function objHasKey<O>(
   obj: O,
   key: keyof any
 ): obj is O & Record<typeof key, unknown> {
-  return Object.prototype.hasOwnProperty.call(obj, key);
+  return obj !== null ? Object.prototype.hasOwnProperty.call(obj, key) : false;
 }
 
 export function isObjectEmpty(obj: Record<string, unknown>): boolean {
-  return Object.keys(obj).length === 0;
+  return obj ? Object.keys(obj).length === 0 : false;
 }
