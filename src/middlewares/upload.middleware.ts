@@ -15,12 +15,13 @@ declare global {
 const uploadSingleImage =
   (folderPath = "/files") =>
   (req: Request, res: Response, next: NextFunction) => {
+    const folderName = UPLOAD_PATH + folderPath;
     const uploadSingle = new Upload({
       fieldName: "image",
-      folderName: UPLOAD_PATH + folderPath,
+      folderName: folderName,
       filename: req.body.filename,
-    }).single();
-    uploadSingle(req, res, function (err: any) {
+    });
+    return uploadSingle.single()(req, res, function (err: any) {
       let file = {
         type: "success",
         message: "Upload file success",

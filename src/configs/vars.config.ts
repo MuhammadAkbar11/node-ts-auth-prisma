@@ -47,7 +47,7 @@ export const ENV_STATIC_FOLDER_PATH = path.join(
   publicFolders[mode] || publicFolders["production"]
 );
 
-let uploadPath = STATIC_FOLDER + "/uploads";
+let uploadPath = ENV_STATIC_FOLDER_NAME + "/uploads";
 
 if (mode !== "production") {
   uploadPath = `${ENV_STATIC_FOLDER_NAME}/uploads`;
@@ -58,10 +58,12 @@ if (mode !== "production") {
     } catch (error) {
       logger.warn(error, `[SERVER] ${mode} directory fail to create!`);
     }
-    logger.info(`[SERVER] ${mode} directory created!`);
+    logger.info(`[SERVER] ${mode} directory created! with path ${uploadPath}`);
   } else {
-    logger.info(`[SERVER] ${mode} directory founded!`);
+    logger.info(`[SERVER] ${mode} directory founded! with path ${uploadPath}`);
   }
+} else {
+  logger.info(`[SERVER] ${mode} directory founded! with path ${uploadPath}`);
 }
 
 export const HOSTNAME = os.hostname();

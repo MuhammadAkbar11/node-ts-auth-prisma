@@ -4,7 +4,10 @@ import { BindAllMethods } from "../../utils/decorators.utils";
 import { CreateUserInput } from "../user/user.schema";
 import AuthService from "./auth.service";
 import { Role } from "@prisma/client";
-import { DEFAULT_USER_AVATAR, UPLOAD_PATH } from "../../configs/vars.config";
+import {
+  DEFAULT_USER_AVATAR,
+  ENV_STATIC_FOLDER_PATH,
+} from "../../configs/vars.config";
 import FileHelper from "../../helpers/file.helper";
 
 @BindAllMethods
@@ -20,10 +23,9 @@ class AuthController extends CoreController {
     next: NextFunction
   ) {
     const fileimgData = req.fileimg?.data;
+    let avatar = DEFAULT_USER_AVATAR;
 
     try {
-      let avatar = DEFAULT_USER_AVATAR;
-
       if (fileimgData) {
         avatar = await FileHelper.resizeImageUpload(fileimgData, {
           prefix: "AVATAR",
@@ -41,10 +43,12 @@ class AuthController extends CoreController {
       });
       return res.status(201).json({
         message: "Sign up successfully",
-
         user: user,
       });
     } catch (error: any) {
+      if (fileimgData) {
+        FileHelper.unlinkFile(ENV_STATIC_FOLDER_PATH + avatar, false);
+      }
       this.nextError(next, error);
     }
   }
