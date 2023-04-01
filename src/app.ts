@@ -9,6 +9,8 @@ import {
   returnErrorMiddleware,
 } from "./middlewares/error.middleware";
 import { AutoBind } from "./utils/decorators.utils";
+import UserRouter from "./app/user/user.routes";
+import AuthRouter from "./app/auth/auth.routes";
 
 class App {
   public server;
@@ -32,6 +34,10 @@ class App {
   @AutoBind
   routes() {
     const demoRouter = new DemoRouter();
+    const userRouter = new UserRouter();
+    const authRouter = new AuthRouter();
+    this.server.use("/auth", authRouter.router);
+    this.server.use("/users", userRouter.router);
     this.server.use("/", demoRouter.router);
   }
 
