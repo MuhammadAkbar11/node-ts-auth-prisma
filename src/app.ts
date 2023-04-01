@@ -23,6 +23,7 @@ class App {
   }
 
   middlewares() {
+    this.server.use(express.urlencoded({ extended: true }));
     this.server.use(express.json());
     this.server.use(pinoHttpLogger);
     this.server.use(express.static(STATIC_FOLDER));

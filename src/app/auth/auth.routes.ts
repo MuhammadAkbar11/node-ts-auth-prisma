@@ -14,7 +14,7 @@ class AuthRouter extends CoreRouter<AuthController> {
     this.router.post(
       "/user/signup",
       uploadSingleImage("/users"),
-      validateResource(createUserSchema),
+      [validateResource(createUserSchema)],
       this.controller.signupUser
     );
   }
