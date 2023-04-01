@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import { PRIVATE_KEY, PUBLIC_KEY } from "../configs/vars.config";
 import { IJwtPayload } from "./types/interfaces";
-import { AutoBind } from "./utils";
+import { AutoBind } from "./decorators.utils";
 
 abstract class JWT {
   @AutoBind
