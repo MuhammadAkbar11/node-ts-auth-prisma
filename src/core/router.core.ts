@@ -1,9 +1,11 @@
-import express from "express";
+import express, { RequestHandler } from "express";
 
-export class CoreRouter {
+export class CoreRouter<T> {
   public router: express.Router;
-  constructor() {
+  public controller: T;
+  constructor(Controller: new () => T) {
     this.router = express.Router();
+    this.controller = new Controller();
   }
 
   static routers() {
