@@ -3,3 +3,8 @@ export interface IJwtPayload {
   expired: boolean;
   decoded: any;
 }
+
+export interface ErrorData {
+  isOperational?: boolean;
+  [key: string]: any;
+}

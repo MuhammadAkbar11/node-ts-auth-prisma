@@ -9,7 +9,6 @@ class DemoRouter extends CoreRouter {
 
   protected init() {
     const controller = new DemoController();
-
     this.router.get("/", controller.GET);
   }
 }
