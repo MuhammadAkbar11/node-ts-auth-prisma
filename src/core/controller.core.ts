@@ -1,16 +1,15 @@
-// import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 import { NextFunction } from "express";
-
 import { HTTP_STATUS_CODE } from "../configs/vars.config";
 import BaseError from "../helpers/error.helper";
 import { ErrorData } from "../utils/types/interfaces";
+import prisma from "../database/prisma";
 
 export class CoreController {
-  // public prisma: PrismaClient;
+  public prisma: PrismaClient;
   public methodStatus = HTTP_STATUS_CODE;
-
   constructor() {
-    // this.prisma = new PrismaClient();
+    this.prisma = prisma;
   }
 
   protected error(
@@ -21,7 +20,7 @@ export class CoreController {
       isOperational: true,
     }
   ) {
-    throw new BaseError(name, statusCode, message, errors);
+    return new BaseError(name, statusCode, message, errors);
   }
 
   protected nextError(next: NextFunction, error: any) {

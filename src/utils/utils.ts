@@ -1,7 +1,5 @@
 import readline from "readline";
 import fs from "fs";
-import path from "path";
-import { ROOT_FOLDER } from "../configs/vars.config";
 
 export function printDivider(): string {
   const width = (

@@ -5,8 +5,6 @@ import { Request, NextFunction, Response } from "express";
 import { HTTP_STATUS_CODE } from "../configs/vars.config";
 import { isObjectEmpty, objHasKey, printDivider } from "../utils/utils";
 
-const errorText = chalk.hex("#DA1212");
-
 function logError(err: any) {
   logger.error(chalk.red(`[SERVER] ERROR(${err?.statusCode}): ${err.message}`));
   let trace = "-";
@@ -17,11 +15,12 @@ function logError(err: any) {
   }
 
   console.log(
-    errorText(`${printDivider()}
+    chalk.red(`${printDivider()}
 
-  Name        : ${err.name}
-  Message:    : ${err.message}
-  Stack Trace : ${trace}
+  Name              : ${err.name}
+  Message:          : ${err.message}
+  Operational Error : ${err?.errors?.isOperational ? "Yes" : "No"}
+  Stack Trace       : ${trace}
 
 ${printDivider()}`)
   );

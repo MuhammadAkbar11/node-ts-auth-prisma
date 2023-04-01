@@ -15,7 +15,10 @@ model User {
   id       Int       @id @default(autoincrement())
   email    String    @unique @db.VarChar(128)
   name     String
+  avatar   String    @db.VarChar(225)
   password String    @db.VarChar(225)
+  role     Role      @default(USER)
+  status   Status    @default(PENDING)
   sessions Session[]
 
   @@map("users")
@@ -27,4 +30,16 @@ model Session {
   user    User @relation(fields: [user_id], references: [id])
 
   @@map("sessions")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Status {
+  PENDING
+  ACTIVE
+  INACTIVE
+  SUSPENDED
 }
