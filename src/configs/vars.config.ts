@@ -76,6 +76,7 @@ export const SERVER_URL =
     ? `http://localhost:${PORT}/`
     : `http://${HOSTNAME}:${PORT}/`;
 
+export const DEFAULT_USER_AVATAR = "/images/avatar.jpeg";
 export const HTTP_STATUS_CODE = {
   OK: 200,
   EDIT: 201,
@@ -85,23 +86,23 @@ export const HTTP_STATUS_CODE = {
 };
 
 export const ROLES = {
-  SUPER_ADMIN: "SUPER_ADMIN",
+  // SUPER_ADMIN: "SUPER_ADMIN",
   ADMIN: "ADMIN",
-  PLAYER: "PLAYER",
+  USER: "USER",
 };
 
 export const ROLES_ARR = [
+  // {
+  //   value: "SUPER_ADMIN",
+  //   text: "Superadmin",
+  // },
   {
-    value: "SUPER_ADMIN",
-    text: "Superadmin",
-  },
-  {
-    value: "SUPER_ADMIN",
+    value: "ADMIN",
     text: "Admin",
   },
   {
-    value: "SUPER_ADMIN",
-    text: "Player",
+    value: "USER",
+    text: "USER",
   },
 ];
 
