@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { BindAllMethods } from "../../utils/decorators.utils";
 import apiVersion from "../../utils/version.utils";
-import { prismaConnection } from "../../database/prisma";
 import { BaseController } from "../../core";
+import { prismaConnection } from "../../configs/prisma.config";
 
 @BindAllMethods
 class DemoController extends BaseController {
