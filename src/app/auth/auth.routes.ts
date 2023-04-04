@@ -1,22 +1,31 @@
-import { CoreRouter } from "../../core/router.core";
+import express from "express";
+import { BaseRouter } from "../../core";
 import uploadSingleImage from "../../middlewares/upload.middleware";
 import validateResource from "../../middlewares/validate.middleware";
-import { createUserSchema } from "../user/user.schema";
 import AuthController from "./auth.controller";
+import { signInUserSchema, signUpUserSchema } from "./auth.schema";
+import { BindAllMethods } from "../../utils/decorators.utils";
+import { requiredUser } from "../../middlewares/auth.middleware";
 
-class AuthRouter extends CoreRouter<AuthController> {
-  constructor() {
-    super(AuthController);
-    this.init();
+@BindAllMethods
+class AuthRouter extends BaseRouter<AuthController> {
+  constructor(protected express: express.Application) {
+    super(AuthController, express);
   }
 
-  protected init() {
+  protected routes(): void {
     this.router.post(
       "/user/signup",
       uploadSingleImage("/users"),
-      [validateResource(createUserSchema)],
-      this.controller.signupUser
+      [validateResource(signUpUserSchema)],
+      this.controller.postSignUpUser
     );
+    this.router.post(
+      "/user/signin",
+      [validateResource(signInUserSchema)],
+      this.controller.postSignInUser
+    );
+    this.router.get("/user/session", requiredUser, this.controller.getSession);
   }
 }
 

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import logger from "../configs/logger.config";
+import logger from "./logger.config";
 
 let prisma = new PrismaClient();
 

@@ -1,7 +1,15 @@
+import * as prisma from "@prisma/client";
+
+export interface ISession extends Omit<prisma.User, "password"> {
+  session: number;
+  iat: number;
+  exp: number;
+}
+
 export interface IJwtPayload {
   valid: boolean;
   expired: boolean;
-  decoded: any;
+  decoded: ISession | null;
 }
 
 export interface ErrorData {

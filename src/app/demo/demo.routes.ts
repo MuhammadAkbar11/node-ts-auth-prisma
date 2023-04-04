@@ -1,14 +1,16 @@
-import { CoreRouter } from "../../core/router.core";
+import express from "express";
+import { BindAllMethods } from "../../utils/decorators.utils";
 import DemoController from "./demo.controller";
+import { BaseRouter } from "../../core";
 
-class DemoRouter extends CoreRouter<DemoController> {
-  constructor() {
-    super(DemoController);
-    this.init();
+@BindAllMethods
+class DemoRouter extends BaseRouter<DemoController> {
+  constructor(protected express: express.Application) {
+    super(DemoController, express);
   }
 
-  protected init() {
-    this.router.get("/", this.controller.GET);
+  protected routes(): void {
+    this.router.get("/", this.controller.get);
   }
 }
 

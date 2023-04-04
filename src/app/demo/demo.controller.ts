@@ -1,16 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import { CoreController } from "../../core/controller.core";
 import { BindAllMethods } from "../../utils/decorators.utils";
 import apiVersion from "../../utils/version.utils";
-import { prismaConnection } from "../../database/prisma";
+import { BaseController } from "../../core";
+import { prismaConnection } from "../../configs/prisma.config";
 
 @BindAllMethods
-class DemoController extends CoreController {
+class DemoController extends BaseController {
   constructor() {
     super();
   }
 
-  public async GET(_req: Request, res: Response, next: NextFunction) {
+  public async get(_req: Request, res: Response, next: NextFunction) {
     try {
       const connect = await prismaConnection();
       res.status(200).json({

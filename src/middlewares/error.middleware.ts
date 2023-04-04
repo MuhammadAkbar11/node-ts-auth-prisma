@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { omit } from "lodash";
 import BaseError from "../helpers/error.helper";
 import logger from "../configs/logger.config";
 import { Request, NextFunction, Response } from "express";
@@ -7,12 +8,9 @@ import { isObjectEmpty, objHasKey, printDivider } from "../utils/utils";
 
 function logError(err: any) {
   logger.error(chalk.red(`[SERVER] ERROR(${err?.statusCode}): ${err.message}`));
-  let trace = "-";
-  if (err.errors.stackTrace) {
-    console.log();
-    trace = `\n\n
-  ${err.errors.stackTrace.join(`\n\n  `)}\n`;
-  }
+  const trace = err.errors?.stackTrace
+    ? `\n\n  ${err.errors.stackTrace.join(`\n\n  `)}\n`
+    : "-";
 
   console.log(
     chalk.red(`${printDivider()}
@@ -56,7 +54,7 @@ export function returnErrorMiddleware(
   const name = err?.name || "SERVER_ERROR";
   const status = err?.statusCode || HTTP_STATUS_CODE.INTERNAL_SERVER;
   const message = err?.message || "Internal Server Error";
-  const errData = err?.errors || null;
+  const errData = omit(err?.errors, "isOperational") || null;
 
   let responseData = {
     name,

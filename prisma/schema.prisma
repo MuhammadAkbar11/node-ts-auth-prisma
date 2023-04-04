@@ -25,9 +25,12 @@ model User {
 }
 
 model Session {
-  id      Int  @id @default(autoincrement())
-  user_id Int  @unique
-  user    User @relation(fields: [user_id], references: [id])
+  id         Int      @id @default(autoincrement())
+  user_id    Int      @unique
+  user       User     @relation(fields: [user_id], references: [id])
+  user_agent String   @db.LongText
+  valid      Boolean
+  expired    DateTime
 
   @@map("sessions")
 }

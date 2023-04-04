@@ -2,10 +2,10 @@ import fs from "fs";
 import path from "path";
 import sharp from "sharp";
 import chalk from "chalk";
-import dayJsUTC from "../utils/dayjs.utils";
-import { ROOT_FOLDER, UPLOAD_PATH } from "../configs/vars.config";
+import { ROOT_FOLDER } from "../configs/vars.config";
 import BaseError from "./error.helper";
 import logger from "../configs/logger.config";
+import { dateUTC } from "../configs/date.config";
 
 const bgWarn = chalk.bgHex("#EA7A20");
 
@@ -22,7 +22,6 @@ class FileHelper {
     if (fs.existsSync(file)) {
       return fs.unlink(file, (err: any) => {
         if (err) {
-          console.log(err);
           throw BaseError.transformError(err);
         }
         logger.warn(
@@ -46,7 +45,7 @@ class FileHelper {
       .trim();
     const filenameToArr = oriName.split(" ").join("").split(".");
     const ext = filenameToArr[filenameToArr.length - 1];
-    return `${prefix}_${resultFileName}_${dayJsUTC().valueOf()}.${ext}`;
+    return `${prefix}_${resultFileName}_${dateUTC().valueOf()}.${ext}`;
   }
 
   static async resizeImageUpload(
@@ -79,7 +78,10 @@ class FileHelper {
       // .extract({ width: options?.width || 200, height: options?.height || 200 })
       .jpeg({ quality: 90 })
       .toFile(path.resolve(fileimgData.destination, resultImg));
-    logger.info(status, "success resizing image fle");
+    logger.info(
+      status,
+      `${bgWarn(chalk.black(`[HELPER]`))} Success resizing image fle`
+    );
     this.unlinkFile(fileimgData.path);
     return `/uploads${fileimgData.folderPath}/${resultImg}`;
   }

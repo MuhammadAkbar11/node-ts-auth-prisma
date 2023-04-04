@@ -5,4 +5,6 @@ import timezone from "dayjs/plugin/timezone.js";
 dayjs.extend(utc);
 dayjs.extend(timezone);
 
+export const dateIndoWIB = (date?: dayjs.ConfigType) =>
+  dayjs(date).tz("Asia/Jakarta");
 export const dateUTC = dayjs.utc;
