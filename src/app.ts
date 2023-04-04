@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import DemoRouter from "./app/demo/demo.routes";
 import pinoHttpLogger from "./middlewares/logging.middleware";
 import { ENV_STATIC_FOLDER_PATH, STATIC_FOLDER } from "./configs/vars.config";
@@ -8,8 +9,9 @@ import {
   returnError404Middleware,
   returnErrorMiddleware,
 } from "./middlewares/error.middleware";
-import UserRouter from "./app/user/user.routes";
 import AuthRouter from "./app/auth/auth.routes";
+import ProfileRouter from "./app/profile/profile.routes";
+import { deserializeUser } from "./middlewares/auth.middleware";
 
 class App {
   public server;
@@ -24,6 +26,8 @@ class App {
   middlewares() {
     this.server.use(express.urlencoded({ extended: true }));
     this.server.use(express.json());
+    this.server.use(cors());
+    this.server.use(deserializeUser);
     this.server.use(pinoHttpLogger);
     this.server.use(express.static(STATIC_FOLDER));
     if (ENV.MODE !== "production") {
@@ -33,10 +37,10 @@ class App {
 
   routes() {
     const demoRouter = new DemoRouter(this.server);
-    // const userRouter = new UserRouter();
+    const profileRouter = new ProfileRouter(this.server);
     const authRouter = new AuthRouter(this.server);
     this.server.use("/auth", authRouter.getRouter());
-    // this.server.use("/users", userRouter.router);
+    this.server.use("/profile", profileRouter.getRouter());
     this.server.use("/", demoRouter.getRouter());
   }
 
