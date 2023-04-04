@@ -41,7 +41,7 @@ class Upload {
         cb(null, this.folderName);
       },
       filename: (req, file, cb) => {
-        logger.info(file, " [UPLOAD] Request new file");
+        logger.info(file, "[UPLOAD] Request new file");
         let filename = req.body.filename ?? this.filename;
         if (!filename) {
           filename = file.fieldname;

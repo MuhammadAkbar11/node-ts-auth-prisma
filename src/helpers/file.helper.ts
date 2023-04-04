@@ -78,7 +78,10 @@ class FileHelper {
       // .extract({ width: options?.width || 200, height: options?.height || 200 })
       .jpeg({ quality: 90 })
       .toFile(path.resolve(fileimgData.destination, resultImg));
-    logger.info(status, "success resizing image fle");
+    logger.info(
+      status,
+      `${bgWarn(chalk.black(`[HELPER]`))} Success resizing image fle`
+    );
     this.unlinkFile(fileimgData.path);
     return `/uploads${fileimgData.folderPath}/${resultImg}`;
   }
