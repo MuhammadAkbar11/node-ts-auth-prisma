@@ -3,8 +3,9 @@ import { PrismaClient } from "@prisma/client";
 import { ErrorData } from "../utils/types/interfaces";
 import { HTTP_STATUS_CODE } from "../configs/vars.config";
 import BaseError from "../helpers/error.helper";
-import prisma from "../database/prisma";
 import { getErrorSnippets } from "../utils/utils";
+import loggerConfig from "../configs/logger.config";
+import prisma from "../configs/prisma.config";
 
 export abstract class BaseRouter<T> {
   protected readonly router: Router;
@@ -34,6 +35,8 @@ export abstract class BaseRouter<T> {
 export abstract class BaseController {
   protected readonly prisma: PrismaClient;
   protected readonly methodStatus = HTTP_STATUS_CODE;
+  protected readonly logger = loggerConfig;
+
   constructor() {
     this.prisma = prisma;
   }
@@ -57,6 +60,7 @@ export abstract class BaseController {
 export class BaseService {
   protected prisma: PrismaClient;
   protected methodStatus = HTTP_STATUS_CODE;
+  protected logger = loggerConfig;
   constructor() {
     this.prisma = prisma;
   }
