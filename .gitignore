@@ -111,6 +111,8 @@ build/
 test/
 
 .env
+.env.development
 .env.test
-.env.prod
-.env.dev
+private.key
+public.key
+*.pem
