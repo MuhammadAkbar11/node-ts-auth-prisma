@@ -20,10 +20,18 @@
 ## Get Started
 
 1. Clone repository
-2. Create Google ClientID & Refresh Token
-3. Setup ENV File (read env example in `docs > .env.example` for setup)
+2. Setup ENV File (read env example in `docs > .env.example` for setup)
+3. Generate your own private key & public key using openssl
+    - generate private key
+        ```sh
+        openssl genrsa -out private_key.pem 2048
+        ```
+    - generate public key
+        ```sh
+        openssl rsa -in private_key.pem -pubout -out public_key.pem
+        ```
 4. Open Command or Terminal and Write **yarn install**
-6. Commands :
+5. Commands :
     - Write **yarn dev** in terminal for development
     - Write **yarn start** in terminal for production
     - Write **yarn test** in terminal for testing
