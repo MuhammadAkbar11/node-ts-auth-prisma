@@ -1,4 +1,22 @@
-export function AutoBind(
+// export function Bind() {
+//   return function (target: any, key: string, descriptor: PropertyDescriptor) {
+//     const fn = descriptor.value;
+//     return {
+//       configurable: true,
+//       get() {
+//         const boundFn = fn.bind(this);
+//         Object.defineProperty(this, key, {
+//           value: boundFn,
+//           configurable: true,
+//           writable: true,
+//         });
+//         return boundFn;
+//       },
+//     };
+//   };
+// }
+
+export function Bind(
   _target: any,
   _methodName: string,
   descriptor: PropertyDescriptor
@@ -24,7 +42,7 @@ export function BindAllMethods(target: any) {
     const descriptor = Object.getOwnPropertyDescriptor(proto, name);
 
     if (descriptor?.value instanceof Function) {
-      Object.defineProperty(proto, name, AutoBind(proto, name, descriptor));
+      Object.defineProperty(proto, name, Bind(proto, name, descriptor));
     }
   }
 }
