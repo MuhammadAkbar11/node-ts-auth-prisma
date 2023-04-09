@@ -72,6 +72,14 @@ export const MODE = mode;
 export const DATABASE_URL = process.env.DATABASE_UR as string;
 export const PRIVATE_KEY = process.env.PRIVATE_KEY as string;
 export const PUBLIC_KEY = process.env.PUBLIC_KEY as string;
+export const OAUTH_REFRESH_TOKEN = process.env?.OAUTH_REFRESH_TOKEN as string;
+export const OAUTH_CLIENTID = process.env?.OAUTH_CLIENTID as string;
+export const OAUTH_CLIENT_SECRET = process.env?.OAUTH_CLIENT_SECRET as string;
+export const OAUTH_PLAYGROUND = process.env?.OAUTH_PLAYGROUND as string;
+export const GMAIL = process.env?.GMAIL as string;
+export const ZOHOMAIL = process.env?.ZOHOMAIL as string;
+export const ZOHOMAIL_PW = process.env?.ZOHOMAIL_PW as string;
+
 export const UPLOAD_PATH = uploadPath;
 export const SERVER_URL =
   MODE === "development"
