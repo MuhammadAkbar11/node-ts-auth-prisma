@@ -2,9 +2,8 @@ import pino from "pino";
 import pinoPretty from "pino-pretty";
 import { dateUTC } from "./date.config";
 
-const timeformat = "DD.MM.YYYY HH:mm:ss";
+const timeformat = "DD.MM.YYYY|HH:mm:ss";
 const time = dateUTC().tz("Asia/Jakarta").format(timeformat);
-
 const streams = [
   {
     stream: pinoPretty({
