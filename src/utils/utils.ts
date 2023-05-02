@@ -1,5 +1,8 @@
 import readline from "readline";
+import path from "path";
 import fs from "fs";
+import { ROOT_FOLDER } from "../configs/vars.config";
+import logger from "../configs/logger.config";
 
 export function printDivider(): string {
   const width = (
@@ -55,9 +58,37 @@ export function getErrorSnippets(error: Error) {
   return codeSnippet;
 }
 
+interface PackageJson {
+  name: string;
+  description: string;
+  // Tambahkan property lain dari package.json jika diperlukan
+}
+
+export function packageJsonInfo(): PackageJson {
+  try {
+    const packageJsonString = fs.readFileSync(
+      path.join(ROOT_FOLDER, "package.json"),
+      "utf8"
+    );
+    const packageJson = JSON.parse(packageJsonString);
+    return {
+      name: packageJson.name,
+      description: packageJson.description,
+      // Tambahkan property lain dari package.json jika diperlukan
+    };
+  } catch (err) {
+    logger.error("[UTILS] Failed to read package.json file.", err);
+    return {
+      name: "",
+      description: "",
+      // Tambahkan property lain dari package.json jika diperlukan
+    };
+  }
+}
+
 export function objHasKey<O>(
   obj: O,
-  key: keyof any
+  key: keyof O
 ): obj is O & Record<typeof key, unknown> {
   return obj !== null ? Object.prototype.hasOwnProperty.call(obj, key) : false;
 }
