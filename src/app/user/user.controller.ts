@@ -1,11 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-import { CoreController } from "../../core/controller.core";
 import { BindAllMethods } from "../../utils/decorators.utils";
 import { CreateUserInput } from "./user.schema";
 import UserService from "./user.service";
+import { BaseController } from "../../core";
 
 @BindAllMethods
-class UserController extends CoreController {
+class UserController extends BaseController {
   private service = new UserService();
   constructor() {
     super();

@@ -1,11 +1,11 @@
 import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
-import { CoreService } from "../../core/service.core";
 import { BindAllMethods } from "../../utils/decorators.utils";
 import { omit } from "lodash";
+import { BaseService } from "../../core";
 
 @BindAllMethods
-class UserService extends CoreService {
+class UserService extends BaseService {
   constructor() {
     super();
   }

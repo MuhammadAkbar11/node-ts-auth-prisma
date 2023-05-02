@@ -1,15 +1,16 @@
-import { CoreRouter } from "../../core/router.core";
-import validateResource from "../../middlewares/validate.middleware";
-import UserController from "./user.controller";
-import { createUserSchema } from "./user.schema";
+import express from "express";
 
-class UserRouter extends CoreRouter<UserController> {
-  constructor() {
-    super(UserController);
-    this.init();
+import { BaseRouter } from "../../core";
+// import validateResource from "../../middlewares/validate.middleware";
+import UserController from "./user.controller";
+// import { createUserSchema } from "./user.schema";
+
+class UserRouter extends BaseRouter<UserController> {
+  constructor(protected express: express.Application) {
+    super(UserController, express);
   }
 
-  protected init() {
+  protected routes() {
     // this.router.post(
     //   "/",
     //   validateResource(createUserSchema),
