@@ -44,12 +44,12 @@ export const signInUserSchema = z.object({
   }),
 });
 
-export type SignInUserInput = Omit<
+export type SignInUserPayload = Omit<
   z.TypeOf<typeof signInUserSchema>,
   "body.passwordConfirmation"
 >;
 
-export type SignUpUserInput = Omit<
+export type SignUpUserPayload = Omit<
   z.TypeOf<typeof signUpUserSchema>,
   "body.passwordConfirmation"
 >;

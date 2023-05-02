@@ -3,7 +3,7 @@ import { User } from "@prisma/client";
 import { omit, get } from "lodash";
 import { BindAllMethods } from "../../utils/decorators.utils";
 import { BaseService } from "../../core";
-import { comparePassword, hashPassword } from "../../utils/password.utils";
+import { comparePassword, hashPassword } from "../../utils/auth.utils";
 import JWT from "../../helpers/jwt.helper";
 import prismaCfg from "../../configs/prisma.config";
 import {
@@ -13,7 +13,6 @@ import {
   REFRESH_TOKEN_TTL,
 } from "../../configs/vars.config";
 import { dateUTC } from "../../configs/date.config";
-import { ISession } from "../../utils/types/interfaces";
 
 export interface IInputSession {
   userId: number;

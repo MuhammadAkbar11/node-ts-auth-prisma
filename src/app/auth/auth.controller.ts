@@ -1,19 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import { BindAllMethods } from "../../utils/decorators.utils";
 import AuthService from "./auth.service";
-import { SignInUserInput, SignUpUserInput } from "./auth.schema";
+import { SignInUserPayload, SignUpUserPayload } from "./auth.schema";
 import { Role } from "@prisma/client";
 import {
-  ACCESS_TOKEN_MAX_AGE,
-  ACCESS_TOKEN_TTL,
   DEFAULT_USER_AVATAR,
   ENV_STATIC_FOLDER_PATH,
-  REFRESH_TOKEN_MAX_AGE,
-  REFRESH_TOKEN_TTL,
 } from "../../configs/vars.config";
 import FileHelper from "../../helpers/file.helper";
 import { BaseController } from "../../core";
-import JWT from "../../helpers/jwt.helper";
 
 @BindAllMethods
 class AuthController extends BaseController {
@@ -23,7 +18,7 @@ class AuthController extends BaseController {
   }
 
   public async postSignUpUser(
-    req: Request<{}, {}, SignUpUserInput["body"]>,
+    req: Request<{}, {}, SignUpUserPayload["body"]>,
     res: Response,
     next: NextFunction
   ) {
@@ -59,7 +54,7 @@ class AuthController extends BaseController {
   }
 
   public async postSignInUser(
-    req: Request<{}, {}, SignInUserInput["body"]>,
+    req: Request<{}, {}, SignInUserPayload["body"]>,
     res: Response,
     next: NextFunction
   ) {
@@ -94,17 +89,17 @@ class AuthController extends BaseController {
       }
 
       if (session) {
-        const { id: sessionId } = session;
+        const sessionId = session.id;
         const { refreshToken, accessToken } = this.service.setSessionToken(
           res,
-          { user, sessionId: session.id }
+          { user, sessionId: sessionId }
         );
 
         return res.status(200).json({
           message: "Sign in successfully",
-          user: { ...user, session: session.id },
-          refreshToken,
-          accessToken,
+          user: { ...user, session: sessionId },
+          // refreshToken,
+          // accessToken,
         });
       }
 
