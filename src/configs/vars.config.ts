@@ -79,6 +79,7 @@ export const OAUTH_PLAYGROUND = process.env?.OAUTH_PLAYGROUND as string;
 export const GMAIL = process.env?.GMAIL as string;
 export const ZOHOMAIL = process.env?.ZOHOMAIL as string;
 export const ZOHOMAIL_PW = process.env?.ZOHOMAIL_PW as string;
+export const DEVS_EMAIL = (process.env?.DEVS_EMAIL as string) || GMAIL;
 
 export const UPLOAD_PATH = uploadPath;
 export const SERVER_URL =
