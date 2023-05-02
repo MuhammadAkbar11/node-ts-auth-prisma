@@ -3,6 +3,7 @@ import cron from "node-cron";
 import app from "./app";
 import logger from "./configs/logger.config";
 import { dateUTC } from "./configs/date.config";
+import { isOAuthRefreshTokenExpired } from "./utils/auth.utils";
 import prisma from "./configs/prisma.config";
 
 dotenvConfig;
@@ -10,7 +11,7 @@ dotenvConfig;
 app.listen(PORT, () => logger.info(`[SERVER] app running on ${SERVER_URL}`));
 
 cron.schedule(
-  "* * * * *",
+  "0 0 0 * * *",
   async () => {
     logger.info("[SERVER][SCHEDULE] Checking expired sessions...");
     const expiredSessions = await prisma.session.deleteMany({
@@ -20,7 +21,16 @@ cron.schedule(
         },
       },
     });
-    logger.info(expiredSessions, "[SERVER][SCHEDULE] Deleted expired sessions");
+    if (expiredSessions.count !== 0) {
+      logger.info(
+        expiredSessions,
+        "[SERVER][SCHEDULE] Deleted expired sessions"
+      );
+    } else {
+      logger.info("[SERVER][SCHEDULE] No expired sessions");
+    }
+
+    await isOAuthRefreshTokenExpired();
   },
   {
     timezone: "Asia/Jakarta",
