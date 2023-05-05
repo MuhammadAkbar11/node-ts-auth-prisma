@@ -35,6 +35,17 @@ model Session {
   @@map("sessions")
 }
 
+/// @@Gen.model(hide: true)
+model AutoIncrement {
+  id      Int     @id @default(autoincrement())
+  tb_name String  @db.VarChar(255)
+  field   String? @unique @db.VarChar(20)
+  prefix  String? @db.VarChar(25)
+  value   BigInt? @default(1)
+
+  @@map("tb_autoincrement")
+}
+
 enum Role {
   USER
   ADMIN
