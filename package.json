@@ -10,11 +10,13 @@
     "start:local": "nodemon ./build/server.js",
     "dev": "ts-node-dev --respawn --exit-child --transpile-only ./src/server.ts",
     "build": "tsc",
-    "seed": "ts-node ./src/database/seed/seed.ts",
+    "seed": "dotenv -e .env.development ts-node ./src/database/seed/seed.ts",
+    "db:setup": "dotenv -e .env.development ts-node ./src/database/setup.ts",
     "db:migrate": "dotenv -e .env.development -- npx prisma migrate",
     "db:pull": "dotenv -e .env.development -- npx prisma db pull",
     "db:push": "dotenv -e .env.development -- npx prisma db push",
-    "studio": "dotenv -e .env.development -- npx prisma studio"
+    "db:sync": "yarn db:push && yarn db:pull",
+    "db:studio": "dotenv -e .env.development -- npx prisma studio"
   },
   "dependencies": {
     "@prisma/client": "^4.12.0",
