@@ -22,3 +22,10 @@ export interface IFileImg {
   message: string;
   data: (Express.Multer.File & { folderPath: string }) | null;
 }
+
+export interface IGenerateAutoIncFieldHelper {
+  prismaTx?: prisma.Prisma.TransactionClient;
+  tableName: string;
+  field: string;
+  length?: number;
+}
