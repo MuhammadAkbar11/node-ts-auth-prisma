@@ -31,7 +31,9 @@
         openssl rsa -in private_key.pem -pubout -out public_key.pem
         ```
 4. Open Command or Terminal and Write **yarn install**
-5. Commands :
+5. Write **yarn db:migrate** in terminal to run prisma migration
+6. Write **yarn db:setup** in terminal to run some setup for database
+7. Commands :
     - Write **yarn dev** in terminal for development
     - Write **yarn start** in terminal for production
     - Write **yarn test** in terminal for testing
