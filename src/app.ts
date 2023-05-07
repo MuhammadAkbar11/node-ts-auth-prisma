@@ -1,5 +1,8 @@
 import express from "express";
 import cors from "cors";
+import useragent from "express-useragent";
+import requestIp from "request-ip";
+import cookieParser from "cookie-parser";
 import DemoRouter from "./app/demo/demo.routes";
 import pinoHttpLogger from "./middlewares/logging.middleware";
 import { ENV_STATIC_FOLDER_PATH, STATIC_FOLDER } from "./configs/vars.config";
@@ -28,6 +31,9 @@ class App {
     this.server.use(express.urlencoded({ extended: true }));
     this.server.use(express.json());
     this.server.use(cors());
+    this.server.use(cookieParser());
+    this.server.use(useragent.express());
+    this.server.use(requestIp.mw({ attributeName: "clientIp" }));
     this.server.use(deserializeUser);
     this.server.use(pinoHttpLogger);
     this.server.use(express.static(STATIC_FOLDER));
